@@ -1,0 +1,59 @@
+<%- include('./partials/header') %>
+
+<section class="add-item">
+  <form action="/add" method="POST">
+    <div class="form-control">
+      <input type="text" name="name" placeholder="Item name" required>
+    </div>
+    <div class="form-control">
+      <input type="number" name="quantity" placeholder="Quantity" min="1" value="1">
+    </div>
+    <div class="form-control">
+      <select name="category">
+        <option value="Produce">Produce</option>
+        <option value="Dairy">Dairy</option>
+        <option value="Bakery">Bakery</option>
+        <option value="Meat">Meat</option>
+        <option value="Frozen Foods">Frozen Foods</option>
+        <option value="Canned Goods">Canned Goods</option>
+        <option value="Dry Goods">Dry Goods</option>
+        <option value="Beverages">Beverages</option>
+        <option value="Snacks">Snacks</option>
+        <option value="Household">Household</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <button type="submit" class="btn">Add Item</button>
+  </form>
+</section>
+
+<section class="items">
+  <% if(items.length > 0) { %>
+    <ul>
+      <% items.forEach(item => { %>
+        <li class="<%= item.purchased ? 'purchased' : '' %>">
+          <div class="item-info">
+            <h3><%= item.name %></h3>
+            <p>Quantity: <%= item.quantity %> | Category: <%= item.category %></p>
+          </div>
+          <div class="actions">
+            <form action="/toggle/<%= item._id %>" method="POST" style="display: inline;">
+              <button type="submit" class="btn-toggle">
+                <i class="fas <%= item.purchased ? 'fa-undo' : 'fa-check' %>"></i>
+              </button>
+            </form>
+            <form action="/delete/<%= item._id %>" method="POST" style="display: inline;">
+              <button type="submit" class="btn-delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </form>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>No items in your shopping list</p>
+  <% } %>
+</section>
+
+<%- include('./partials/footer') %>
